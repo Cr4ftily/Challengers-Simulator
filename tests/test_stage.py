@@ -27,6 +27,28 @@ class TestStage(unittest.TestCase):
             if name == card:
                 return card
             
+    def test_battle(self):
+        win_p =  self.stage.battle(10000)
+        self.assertTrue(33 <= win_p <= 37, f"{win_p}")
+
+    def test_reset(self):
+        stage = self.stage
+        stage.battle(1)
+        self.assertEqual(stage.active_player, 0)
+        self.assertEqual(stage.attack_list, [])
+        self.assertEqual(stage.attack_value, [0])
+        self.assertEqual(stage.defend_list, [])
+        self.assertEqual(stage.defend_value, [0])
+        self.assertEqual(stage.p1_bench_list, [])
+        self.assertEqual(stage.p1_bench_unique, [0])
+        self.assertEqual(stage.p1_cc, [0])
+        self.assertEqual(stage.p1_counter, [0])
+        self.assertEqual(stage.p1_from_bench, [])
+        self.assertEqual(stage.p2_bench_list, [])
+        self.assertEqual(stage.p2_bench_unique, [0])
+        self.assertEqual(stage.p2_cc, [0])
+        self.assertEqual(stage.p2_counter, [0])
+        self.assertEqual(stage.p2_from_bench, [])
     
             
     
