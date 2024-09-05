@@ -27,6 +27,12 @@ class InvalidCardName(Exception):
 class NonExsistentPlayer(Exception):
     pass
 
+class SamePlayer(Exception):
+    pass
+
+class InvalidPrompt(Exception):
+    pass
+
 class Challengers_Simulator(cmd.Cmd):
     intro = "Welcome to Challengers Simulator. Type help or ? to list commands.\n"
     prompt = "Challengers Simulator: "
@@ -61,9 +67,9 @@ class Challengers_Simulator(cmd.Cmd):
             if type == "user":
                 if len(input) != 2:
                     raise IncorrectArguments
-                name = input[-1]
+                name = input[1]
                 if name in self.players:
-                    raise InvalidPlayerName
+                    raise InvalidPlayerName(name)
                 self.players.append(Player(name))
             elif type == "stage":
                 if len(input) != 3:
@@ -73,16 +79,22 @@ class Challengers_Simulator(cmd.Cmd):
                     raise NonExsistentPlayer(p1)
                 elif p2 not in self.players:
                     raise NonExsistentPlayer(p2)
-                self.stage = Stage(self.find_player(p1), self.find_player(p2))
+                p1 = self.find_player(p1)
+                p2 = self.find_player(p2)
+                if p1 is p2:
+                    raise SamePlayer
+                self.stage = Stage(p1, p2)
             else:
-                raise Exception
+                raise InvalidPrompt
         except IncorrectArguments:
             print("Please provide the correct arguments. Type help add")
-        except InvalidPlayerName:
-            print("Please provice unique player name.")
-        except NonExsistentPlayer:
-            print(f"There is no player with the name of {NonExsistentPlayer}.")
-        except Exception:
+        except InvalidPlayerName as name:
+            print(f"{name} already exists.")
+        except NonExsistentPlayer as name:
+            print(f"There is no player with the name of {name}.")
+        except SamePlayer:
+            print("Please provide different players to the stage")
+        except InvalidPrompt:
             print("Invalid promt. Type help create")
 
     def do_add(self, line):
@@ -102,10 +114,10 @@ class Challengers_Simulator(cmd.Cmd):
                 player.add_card(self.find_card(card))
         except IncorrectArguments:
             print("Please provide the correct arguments. Type help add")
-        except InvalidPlayerName:
-            print(f"{InvalidPlayerName} is not a valid player name.")
-        except InvalidCardName:
-            print(f"{InvalidCardName} is not a valid card name.")
+        except InvalidPlayerName as name:
+            print(f"{name} is not a valid player name.")
+        except InvalidCardName as name:
+            print(f"{name} is not a valid card name.")
     
     def do_remove(self, line):
         "Remove a card or cards from users deck\n     remove [user] [cards]\ne.g. remove bob    butler cat\ntype card to see list of cards"
@@ -127,13 +139,13 @@ class Challengers_Simulator(cmd.Cmd):
                 else:
                     raise InvalidCard(card)
         except IncorrectArguments:
-            print("Please provide the correct arguments. Type help add")
-        except InvalidPlayerName:
-            print(f"{InvalidPlayerName} is not a valid player name.")
-        except InvalidCardName:
-            print(f"{InvalidCardName} is not a valid card name.")
-        except InvalidCard:
-            print(f"Player does not have {InvalidCard}")
+            print("Please provide the correct arguments. Type help remove")
+        except InvalidPlayerName as name:
+            print(f"{name} is not a valid player name.")
+        except InvalidCardName as name:
+            print(f"{name} is not a valid card name.")
+        except InvalidCard as card:
+            print(f"Player does not have {card}")
 
     def do_player(self, line):
         "Look at list of players name or the cards of the given player\nplayer (look at list of players)\nplayer [name] (look at cards of player with given name)"
@@ -145,8 +157,8 @@ class Challengers_Simulator(cmd.Cmd):
                     raise InvalidPlayerName(line)
                 player = self.find_player(line)
                 print(player.deck)
-        except InvalidPlayerName:
-            print(f"{InvalidPlayerName} does not exist.")
+        except InvalidPlayerName as name:
+            print(f"{name} does not exist.")
 
     def do_stage(self, line):
         "Shows the two players on stage, where first player shown goes first."
@@ -154,7 +166,19 @@ class Challengers_Simulator(cmd.Cmd):
 
     def do_battle(self, line):
         "Commence the battle x times on the current stage\nbattle 1\nReturns percentage of the number of times first player wins."
-        print(f"{self.stage.battle(int(line))}%")
+        try:
+            if len(line) == 0:
+                raise IncorrectArguments
+            x: int
+            if "\n" in line:
+                x = int(line.replace('\n', ''))
+            x = int(line)
+            win_p = self.stage.battle(x)
+            print(f"{win_p}%")
+        except IncorrectArguments:
+            print("Please provide number of times to simulate battle. Type help battle")
+        except Exception:
+            print("Please provide a number. Type help battle")
 
     def do_reset(self, line):
         "Clears out player list and stage; recreates default players and stage"
@@ -164,7 +188,13 @@ class Challengers_Simulator(cmd.Cmd):
 
     def do_cards(self, line):
         "Shows list of cards"
-        print(self.cards_pool)
+        cards = ""
+        for card in self.cards_pool:
+            cards += card.name + ", "
+            if len(cards) > 100:
+                print(cards)
+                cards = ""
+        print(cards[:-2])
 
     def do_exit(self, line):
         "Exit the application"
