@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "C:\\Users\\kravt\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/src"
+
+    ]
+}
