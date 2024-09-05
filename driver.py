@@ -1,6 +1,7 @@
 from classes.card import Card
 from classes.player import Player
 from classes.stage import Stage
+from card_enums import Cards
 from typing import List
 
 import json
@@ -57,6 +58,12 @@ class Challengers_Simulator(cmd.Cmd):
             if name == card:
                 return card
 
+    def enum(self, name):           # run given card name through the enums
+        try:
+            return Cards[name].value
+        except KeyError:
+            return name
+
     def do_create(self, line):
         "Create User or Stage: \ncreate user [name]\ncreate stage [user1] [user2] (replaces previous stage)\nThe first user you input will go first"
         try:
@@ -109,9 +116,11 @@ class Challengers_Simulator(cmd.Cmd):
                 raise InvalidPlayerName(name)
             player = self.find_player(name)
             for card in cards:
-                if card not in self.cards_pool:
+                e_card = self.enum(card)
+                if e_card not in self.cards_pool:
                     raise InvalidCardName(card)
-                player.add_card(self.find_card(card))
+                player.add_card(self.find_card(e_card))
+            self.print_deck(player)
         except IncorrectArguments:
             print("Please provide the correct arguments. Type help add")
         except InvalidPlayerName as name:
@@ -131,13 +140,16 @@ class Challengers_Simulator(cmd.Cmd):
                 raise InvalidPlayerName(name)
             player = self.find_player(name)
             for card in cards:
-                if card not in self.cards_pool:
+                e_card = self.enum(card)
+                if e_card not in self.cards_pool:
                     raise InvalidCardName(card)
-                to_remove = self.find_card(card)
+                to_remove = self.find_card(e_card)
                 if player.contains(to_remove):
                     player.remove_card(to_remove)
                 else:
                     raise InvalidCard(card)
+                
+            self.print_deck(player)
         except IncorrectArguments:
             print("Please provide the correct arguments. Type help remove")
         except InvalidPlayerName as name:
@@ -147,18 +159,24 @@ class Challengers_Simulator(cmd.Cmd):
         except InvalidCard as card:
             print(f"Player does not have {card}")
 
+    def print_deck(self, player):
+        if not isinstance(player, Player):
+            try:
+                if player not in self.players:
+                    raise InvalidPlayerName(player)
+                player = self.find_player(player)
+                print(player.deck)
+            except InvalidPlayerName as name:
+                print(f"{name} does not exist.")
+        else:
+            print(player.deck)
+
     def do_player(self, line):
         "Look at list of players name or the cards of the given player\nplayer (look at list of players)\nplayer [name] (look at cards of player with given name)"
-        try:
-            if line == "":
-                print(self.players)
-            else:
-                if line not in self.players:
-                    raise InvalidPlayerName(line)
-                player = self.find_player(line)
-                print(player.deck)
-        except InvalidPlayerName as name:
-            print(f"{name} does not exist.")
+        if len(line) == 0:
+            print(self.players)
+        else:
+            self.print_deck(line)
 
     def do_stage(self, line):
         "Shows the two players on stage, where first player shown goes first."

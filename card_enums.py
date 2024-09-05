@@ -85,16 +85,3 @@ class Cards(Enum):
     champ = "Champion"
     fb = "Fan-Bus"
     fan = "Fan-Bus"
-
-# # Access enum members
-# print(Color.RED)            # Output: Color.RED
-# print(Color.GREEN.name)     # Output: 'GREEN'
-# print(Color.BLUE.value)     # Output: 3
-
-# # Compare enum members
-# if Color.RED == Color(1):
-#     print("The color is RED")  # This will be printed
-
-# # Looping through enum members
-# for color in Color:
-#     print(color)
