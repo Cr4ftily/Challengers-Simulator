@@ -69,6 +69,6 @@
     {"name": "Siren", "strength": 6, "color": "purple", "tier": "C"},
     {"name": "Kraken", "strength": 7, "color": "purple", "tier": "C"},
     {"name": "Submarine", "strength": 9, "color": "purple", "tier": "C"},
-    {"name": "Champion", "strength": 3, "color": "teal", "tier": "C"},
-    {"name": "Fan-Bus", "strength": 3, "color": "teal", "tier": "C"}
+    {"name": "Champion", "strength": 4, "color": "teal", "tier": "C"},
+    {"name": "Fan-Bus", "strength": 6, "color": "teal", "tier": "C"}
 ]

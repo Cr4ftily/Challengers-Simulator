@@ -12,89 +12,108 @@ class Card:
     flag_gain: bool = False
     on_attack: bool = False
 
-    def mua(self, stage):
+    def mua(card):
+        if card.strength == 1:
+            return 2
+        return 0
+    def ms(stage):
         return None
-    def ms(self, stage):
+    def gangster(stage):
         return None
-    def gangster(self, stage):
+    def vendor(card):
+        if card.color == "yellow":
+            return 1
+        return 0
+    def juggler(stage):
         return None
-    def vendor(self, stage):
+    def butler(stage):
         return None
-    def juggler(self, stage):
+    def skeleton(stage):
         return None
-    def butler(self, stage):
+    def rp(bench, unique):
+        bench.remove("Rescue Pod")
+        if "Rescue Pod" not in bench:
+            unique[0] -= 1
+    def ai(card):
+        if card.strength == 2:
+            return 1
+        return 0
+    def jester(stage):
         return None
-    def skeleton(self, stage):
+    def sb(stage):
         return None
-    def rp(self, stage):
+    def hermit(stage):
         return None
-    def ai(self, stage):
+    def merman(stage):
         return None
-    def jester(self, stage):
+    def sailor(stage):
         return None
-    def sb(self, stage):
+    def treasure(stage):
         return None
-    def hermit(self, stage):
+    def reporter(stage):
         return None
-    def merman(self, stage):
+    def ufo(stage):
         return None
-    def sailor(self, stage):
+    def band(card):
+        if card.color == "red":
+            return 1
+        return 0
+    def ghost(stage):
         return None
-    def treasure(self, stage):
+    def teenager(stage):
         return None
-    def reporter(self, stage):
+    def necromancer(stage):
         return None
-    def ufo(self, stage):
+    def mime(stage):
         return None
-    def band(self, stage):
+    def clairvoyant(bench, attack, counter):  # good cards to bring up: exhuast, benchers, strength match, copies, on attack 
+        if bench[counter].strength == attack:
+            return 0
+        for i in range(counter, len(bench)):
+            return 1
+    def cowboy(stage):
         return None
-    def ghost(self, stage):
+    def cc(cc):
+        cc[0] = 2
+    def director(card):
+        if card.color == "green":
+            return 1
+        return 0
+    def blacksmith(card):
+        if card.color == "teal":
+            return 1
+        return 0
+    def knight(stage):
         return None
-    def teenager(self, stage):
+    def wizard(stage):
         return None
-    def necromancer(self, stage):
+    def cook(card):
+        return 1
+    def navigator(bench, unique):
         return None
-    def mime(self, stage):
+    def lifegaurd(stage):
         return None
-    def clairvoyant(self, stage):
+    def mascot(stage):
         return None
-    def cowboy(self, stage):
+    def hologram(stage):
         return None
-    def cc(self, stage):
+    def vampire(stage):
         return None
-    def director(self, stage):
+    def vc(stage):
         return None
-    def blacksmith(self, stage):
+    def illusionist(stage):
         return None
-    def knight(self, stage):
+    def villian(stage):
         return None
-    def wizard(self, stage):
+    def bard(card):
+        return 1
+    def prince(bench, unique):
+        bench.remove("Prince")
+        if "Prince" not in bench:
+            unique[0] -= 1
+    def siren(stage):
         return None
-    def cook(self, stage):
-        return None
-    def navigator(self, stage):
-        return None
-    def lifegaurd(self, stage):
-        return None
-    def mascot(self, stage):
-        return None
-    def hologram(self, stage):
-        return None
-    def vampire(self, stage):
-        return None
-    def vc(self, stage):
-        return None
-    def illusionist(self, stage):
-        return None
-    def villian(self, stage):
-        return None
-    def bard(self, stage):
-        return None
-    def prince(self, stage):
-        return None
-    def siren(self, stage):
-        return None
-    def submarine(self, stage):
+    def submarine(stage):
         return None
     
     ability_map = {
@@ -186,7 +205,7 @@ class Card:
         "Submarine": True
     }
 
-    def __init__(self, name, strength, color, tier):
+    def __init__(self, name, strength = 1, color = "", tier  = "A"):
         self.name = name
         self.strength = strength
         self.color = color
@@ -198,7 +217,7 @@ class Card:
         self.on_attack = self.on_attack_map.get(name, False)
 
     def continuous(self):
-        return not (self.bench and self.on_attack and self.flag_gain and self.flag_loss_map and self.ability != None)
+        return not (self.bench or self.on_attack or self.flag_gain or self.flag_loss_map)
 
     def __str__(self):
         # Custom string representation of the dataclass

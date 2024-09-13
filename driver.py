@@ -159,6 +159,14 @@ class Challengers_Simulator(cmd.Cmd):
         except InvalidCard as card:
             print(f"Player does not have {card}")
 
+    def do_alt(self, line):
+        "Alternative card names"
+        print("If cards have multiple words you can use abreviations (e.g. cc for comic character)")
+        print("If a card seems to have a shorthand, try that (e.g. rex for T-rex)")
+        print("Instead of typing out that full name you can use just the first 3 letters (e.g. cla for clairvoyant)")
+        print("Some cards have the same first three so take note that")
+        print("\tcow = cow, not cowboy\n\tclo = clown, not clones\n\tsha = shapeshifter, not shark\n\ther = hermit, not heroine\n\ttre = treasure, not T-rex")
+
     def print_deck(self, player):
         if not isinstance(player, Player):
             try:
@@ -195,8 +203,8 @@ class Challengers_Simulator(cmd.Cmd):
             print(f"{win_p}%")
         except IncorrectArguments:
             print("Please provide number of times to simulate battle. Type help battle")
-        except Exception:
-            print("Please provide a number. Type help battle")
+        # except Exception:
+        #     print("Please provide a number. Type help battle")
 
     def do_reset(self, line):
         "Clears out player list and stage; recreates default players and stage"

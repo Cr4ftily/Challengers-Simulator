@@ -35,7 +35,7 @@ class TestDriver(unittest.TestCase):
         input += 'add me\n'
         input += "add me butler\n"
         input += "add tony butler\n"
-        input += "add me magician\n"
+        input += "add me helicopter\n"
         input += "exit\n"
         sim = Challengers_Simulator()
         with patch('sys.stdin', io.StringIO(input)), patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
@@ -45,7 +45,7 @@ class TestDriver(unittest.TestCase):
 
         self.assertIn("Please provide the correct arguments. Type help add", output)
         self.assertIn("tony is not a valid player name.", output)
-        self.assertIn("magician is not a valid card name.", output)
+        self.assertIn("helicopter is not a valid card name.", output)
 
         self.assertIn("butler", sim.players[0].deck)
 
@@ -54,7 +54,7 @@ class TestDriver(unittest.TestCase):
         input += 'remove me\n'
         input += "remove me talent\n"
         input += "remove alice talent\n"
-        input += "remove me magician\n"
+        input += "remove me helicopter\n"
         input += "remove me cat\n"
         input += "exit\n"
         sim = Challengers_Simulator()
@@ -65,7 +65,7 @@ class TestDriver(unittest.TestCase):
 
         self.assertIn("Please provide the correct arguments. Type help remove", output)
         self.assertIn("alice is not a valid player name.", output)
-        self.assertIn("magician is not a valid card name.", output)
+        self.assertIn("helicopter is not a valid card name.", output)
         self.assertIn("Player does not have cat", output)
 
         self.assertNotIn("talent", sim.players[0].deck)

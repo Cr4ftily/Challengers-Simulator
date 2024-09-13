@@ -16,16 +16,6 @@ class TestStage(unittest.TestCase):
         self.p2 = Player("Bob")
 
         self.stage = Stage(self.p1, self.p2)
-
-    def find_player(self, name):    # given that player with name is in the player pool, return the player with that name
-        for player in self.players:
-            if name == player:
-                return player
-            
-    def find_card(self, name):      # given that player with name is in the player pool, return the player with that name
-        for card in self.cards_pool:
-            if name == card:
-                return card
             
     def test_battle(self):
         win_p =  self.stage.battle(10000)
