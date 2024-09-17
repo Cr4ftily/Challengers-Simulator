@@ -28,8 +28,8 @@ class Card:
         return None
     def butler(stage):
         return None
-    def skeleton(stage):
-        return None
+    def skeleton():
+        return 1
     def rp(bench, unique):
         bench.remove("Rescue Pod")
         if "Rescue Pod" not in bench:
@@ -48,8 +48,8 @@ class Card:
         return None
     def sailor(stage):
         return None
-    def treasure(stage):
-        return None
+    def treasure():
+        return 2
     def reporter(stage):
         return None
     def ufo(stage):
@@ -66,13 +66,16 @@ class Card:
         return None
     def mime(stage):
         return None
-    def clairvoyant(bench, attack, counter):  # good cards to bring up: exhuast, benchers, strength match, copies, on attack 
-        if bench[counter].strength == attack:
-            return 0
-        for i in range(counter, len(bench)):
-            return 1
-    def cowboy(stage):
-        return None
+    def clairvoyant(deck, attack, counter):  # good cards to bring up: exhuast, benchers, strength match, copies, on attack 
+        for i in range(counter[0], len(deck)):
+            if deck[i].strength >= attack:
+                element = deck.pop(i)
+                deck.insert(counter[0], element)
+                return 1
+        return 0
+        #TODO implement better logic
+    def cowboy(counter):
+        counter[0] += 1
     def cc(cc):
         cc[0] = 2
     def director(card):
@@ -89,8 +92,24 @@ class Card:
         return None
     def cook(card):
         return 1
-    def navigator(bench, unique):
-        return None
+    def navigator(deck, attack, counter):
+        second = False
+        for i in range(counter[0], len(deck)):
+            if i > counter[0] + 2:
+                break
+            if not second and deck[i].strength >= attack and i + 1 < len(deck) - 1:
+                element = deck.pop(i+1)
+                deck.insert(len(deck) - 1, element)
+                return 1
+            if second:
+                element = deck.pop(i)
+                deck.insert(counter[0], element)
+                element = deck.pop(i)
+                deck.insert(len(deck) - 1, element)
+                return 1
+            second = True
+        return 0
+        #TODO implement better logic
     def lifegaurd(stage):
         return None
     def mascot(stage):
@@ -101,8 +120,8 @@ class Card:
         return None
     def vc(stage):
         return None
-    def illusionist(stage):
-        return None
+    def illusionist(unique):
+        return 6 - unique[0]
     def villian(stage):
         return None
     def bard(card):
