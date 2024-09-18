@@ -197,6 +197,11 @@ class TestAbilities(unittest.TestCase):
         self.assertTrue(self.stage.battle(100) == 100)
         self.p2.add_card(self.find_card("Newcomer"))
         self.assertTrue(self.stage.battle(100) == 0)
+        self.p2.deck = [self.find_card("Cowboy"), self.find_card("Cowboy"), self.find_card("Cowboy"), self.find_card("Cowboy")]
+        self.p1.deck = [Card("A", 3), Card("B", 3), Card("C", 3), Card("D", 3), Card("E", 3), Card("F", 3), Card("G", 3), Card("H", 3), Card("I", 3), Card("J", 3)]
+        self.assertTrue(self.stage.battle(100) == 0)
+        self.p2.deck = [self.find_card("Cowboy"), self.find_card("Cowboy"), self.find_card("Cowboy")]
+        self.assertTrue(self.stage.battle(100) == 100)
 
     def test_illusionist(self):
         self.p1.deck = [self.find_card("Illusionist")]

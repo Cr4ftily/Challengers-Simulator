@@ -74,7 +74,11 @@ class Card:
                 return 1
         return 0
         #TODO implement better logic
-    def cowboy(counter):
+    def cowboy(counter, deck, bench, unique):
+        card = deck[counter[0]]
+        if card not in bench:
+            unique[0] += 1
+        bench.append(card)
         counter[0] += 1
     def cc(cc):
         cc[0] = 2
