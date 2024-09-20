@@ -26,8 +26,30 @@ class Card:
         return 0
     def juggler(stage):
         return None
-    def butler(stage):
-        return None
+    def butler(bench, unique):
+        to_remove = 2
+        card_count = {}
+        match len(bench):
+            case 0:
+                return 0
+            case 1 | 2:
+                bench = []
+                unique = [0]
+                return 1
+            case _:
+                for card in bench:
+                    if card.name in card_count:
+                        card_count[card.name] += 1
+                    else:
+                        card_count[card.name] = 1
+                removable = 1
+                while to_remove > 0:
+                    for card in bench:
+                        if card_count[card.name] == removable:
+                            bench.remove(card)
+                            to_remove -= min(removable, 2)
+                            unique[0] -= min(removable, 2)
+                    removable += 1
     def skeleton():
         return 1
     def rp(bench, unique):
@@ -243,7 +265,6 @@ class Card:
         return not (self.bench or self.on_attack or self.flag_gain or self.flag_loss_map)
 
     def __str__(self):
-        # Custom string representation of the dataclass
         return f"{self.name}"
     
     def __repr__(self):

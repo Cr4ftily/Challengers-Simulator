@@ -41,9 +41,9 @@ class Stage:
                 self.attack_value[0] += bencher.ability(card=card)
                 
         if card.on_attack or card.continuous():         # trigger on attack or continuous ability
-            match card:
-                case attack if attack.on_attack:
-                    attack.ability(self)
+            match card.name:
+                case "Butler" | "Vacuum Cleaner":
+                    card.ability(bench_list, bench_unique)
                 case _:
                     card.ability(self)
         self.attack_list.append(card)                   # keep track of cards on attack

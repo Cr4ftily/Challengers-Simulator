@@ -214,6 +214,12 @@ class TestAbilities(unittest.TestCase):
         self.assertTrue(10 <= win_p <= 14, f"{win_p}")
         self.p2.deck = [self.find_card("Fan-Bus"), self.find_card("Bat"), self.find_card("Bat")]
         self.assertTrue(self.stage.battle(100) == 0)
-        
+    
+    def test_butler(self):
+        self.p1.deck = [self.find_card("Butler"), Card("A"), Card("B"), Card("C"), Card("D"), Card("E"), Card("F"), Card("G")]
+        self.p2.deck = [Card("A"), Card("B"), Card("C"), Card("D"), Card("E"), Card("F"), Card("E")]
+        win_p = self.stage.battle(10000)
+        self.assertTrue(48 <= win_p <= 52, f"{win_p}")
+
 if __name__ == '__main__':
     unittest.main()

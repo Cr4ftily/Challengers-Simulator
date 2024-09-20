@@ -6,6 +6,7 @@ from typing import List
 
 import json
 import cmd
+import sqlite3
 
 class IncorrectArguments(Exception):
     pass
@@ -43,10 +44,16 @@ class Challengers_Simulator(cmd.Cmd):
     stage: Stage = Stage(players[0], players[-1])
 
     def preloop(self):
-        with open("cards_pool.json", 'r') as file:
-            cards_data = json.load(file)
+        # with open("cards_pool.json", 'r') as file:
+        #     cards_data = json.load(file)
 
-        self.cards_pool = [Card(**data) for data in cards_data]
+        # self.cards_pool = [Card(**data) for data in cards_data]
+        conn = sqlite3.connect('cards_pool.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Cards")
+        cards_data = cursor.fetchall()
+        conn.close()
+        self.cards_pool = [Card(*data[1:4]) for data in cards_data]
 
     def find_player(self, name):    # given that player with name is in the player pool, return the player with that name
         for player in self.players:
@@ -203,8 +210,8 @@ class Challengers_Simulator(cmd.Cmd):
             print(f"{win_p}%")
         except IncorrectArguments:
             print("Please provide number of times to simulate battle. Type help battle")
-        # except Exception:
-        #     print("Please provide a number. Type help battle")
+        except Exception:
+            print("Please provide a number. Type help battle")
 
     def do_reset(self, line):
         "Clears out player list and stage; recreates default players and stage"

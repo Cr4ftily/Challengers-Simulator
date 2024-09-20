@@ -87,7 +87,10 @@ if __name__ == '__main__':
         ("Fan-Bus", 6, "teal", "C")
     ]
     
-    cursor.executemany("INSERT INTO Cards (Name, Strength, Color, Tier) VALUES (?, ?, ?, ?)", data)
+    cursor.execute("SELECT COUNT(*) FROM Cards")
+    row_count = cursor.fetchone()[0]
+    if row_count == 0:
+        cursor.executemany("INSERT INTO Cards (Name, Strength, Color, Tier) VALUES (?, ?, ?, ?)", data)
 
     conn.commit()
 

@@ -96,7 +96,7 @@ class TestDriver(unittest.TestCase):
         self.assertIn("Parrot, Reporter, Talent, UFO, Band, Clones, Alien, Ghost, Teenager, Necromancer, Bat, Mime, Pyrotechnician,", output)
         self.assertIn("Clairvoyant, Rubber Duck, Cowboy, Comic Character, Director, Lion, Blacksmith, Knight, Wizard, Horse,", output)
         self.assertIn("Cook, Navigator, Lifegaurd, Shark, Mascot, Dog, Hologram, Sci-Fi Geek, Slime, Vampire, Vacuum Cleaner,", output)
-        self.assertIn("Werewolf, Illusionist, Bumper Car, Teddy Bear, Herione, T-Rex, Villian, Bard, Prince, Dragon, Siren,", output)
+        self.assertIn("Werewolf, Illusionist, Bumper Car, Teddy Bear, Heroine, T-Rex, Villian, Bard, Prince, Dragon, Siren,", output)
         self.assertIn("Kraken, Submarine, Champion, Fan-Bus", output)
 
     def test_player(self):
